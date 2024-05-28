@@ -5,7 +5,7 @@ import "./App.css"; // Ensure to have styles imported
 const App = () => {
   return (
     <div className="app-container">
-      <h1>Monthly Driver Data Analytics</h1>
+      <h1>Monthly Data Analytics</h1>
       <FileUpload />
     </div>
   );

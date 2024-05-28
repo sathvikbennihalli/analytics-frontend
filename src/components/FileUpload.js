@@ -19,10 +19,13 @@ const FileUpload = () => {
     formData.append("file", file);
 
     try {
-      const response = await fetch("http://localhost:3001/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (response.ok) {
         setMessage("File uploaded successfully.");
