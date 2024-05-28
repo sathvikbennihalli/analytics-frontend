@@ -1,0 +1,71 @@
+/* Reset default margin and padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* General body styles */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: "Courier New", Courier, monospace;
+  background-color: #e0e0e0; /* Light gray background */
+  color: #000; /* Black text */
+}
+
+/* Container styles */
+.app-container {
+  text-align: center;
+  background-color: #fff; /* White container */
+  border: 4px solid #000; /* Black border */
+  padding: 20px;
+  box-shadow: 8px 8px 0 #000; /* Hard shadow */
+}
+
+.file-upload-container {
+  margin-top: 20px;
+}
+
+/* Form styles */
+.file-upload-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Input styles */
+.file-upload-container input {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 2px solid #000; /* Black border */
+  border-radius: 5px;
+  background-color: #ffd700; /* Bright yellow background */
+  color: #000; /* Black text */
+  font-weight: bold;
+}
+
+/* Button styles */
+.file-upload-container button {
+  padding: 10px 20px;
+  background-color: #ff4136; /* Bright red button */
+  color: #fff; /* White text */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-weight: bold;
+}
+
+.file-upload-container button:hover {
+  background-color: #85144b; /* Darker red on hover */
+}
+
+/* Message paragraph styles */
+.file-upload-container p {
+  margin-top: 10px;
+  color: #000; /* Black text */
+  font-weight: bold;
+}
