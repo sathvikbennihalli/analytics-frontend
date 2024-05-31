@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import * as XLSX from "xlsx";
+import { useNavigate } from "react-router-dom";
 
 const FileUpload = () => {
+  const navigate = useNavigate();
   const [file, setFile] = useState(null);
   const [data, setData] = useState([]);
   const [message, setMessage] = useState("");
   const [tableName, setTableName] = useState("");
+  // eslint-disable-next-line no-unused-vars
   const [orderCounts, setOrderCounts] = useState({
     "0-10": 0,
     "10-30": 0,
     "30-60": 0,
     ">60": 0,
   });
+  // eslint-disable-next-line no-unused-vars
   const [totalUsers, setTotalUsers] = useState(0);
 
   const handleFileChange = (e) => {
@@ -50,8 +54,12 @@ const FileUpload = () => {
       });
 
       setData(convertedData);
+      localStorage.removeItem("totalUsers");
+      localStorage.removeItem("orderCounts");
+      localStorage.removeItem("tableName");
       calculateOrderCounts(convertedData);
       setTotalUsers(convertedData.length);
+      localStorage.setItem("uploadedData", JSON.stringify(convertedData));
     };
     reader.readAsBinaryString(file);
   };
@@ -73,6 +81,8 @@ const FileUpload = () => {
     });
 
     setOrderCounts(counts);
+    localStorage.setItem("orderCounts", JSON.stringify(counts));
+    localStorage.setItem("totalUsers", JSON.stringify(data.length));
   };
 
   const handleSubmit = async (e) => {
@@ -98,6 +108,8 @@ const FileUpload = () => {
         const responseData = await response.json();
         setTableName(responseData.tableName);
         setMessage("Data uploaded successfully.");
+        localStorage.setItem("tableName", responseData.tableName);
+        navigate("/analytics");
       } else {
         setMessage("Failed to upload data.");
       }
@@ -107,45 +119,54 @@ const FileUpload = () => {
   };
 
   return (
-    <div className="file-upload-container">
-      <form onSubmit={handleSubmit}>
+    <div className="app-container">
+      <h1>Monthly Data Analytics</h1>
+      <div className="file-upload-container">
+        <form onSubmit={handleSubmit}>
+          <div>
+            <input
+              type="file"
+              accept=".xlsx, .xls"
+              onChange={handleFileChange}
+            />
+          </div>
+          <div>
+            <button type="submit">Upload Excel Data</button>
+          </div>
+        </form>
         <div>
-          <input type="file" accept=".xlsx, .xls" onChange={handleFileChange} />
+          <button
+            type="button"
+            className="analytics-button"
+            onClick={() => navigate("/analytics")}
+          >
+            Get Analytics
+          </button>
         </div>
-        <div>
-          <button type="submit">Upload Excel Data</button>
-        </div>
-      </form>
-      {message && <p>{message}</p>}
-      {tableName && <p>Table Name: {tableName}</p>}
-      <div style={{ marginTop: "20px", fontWeight: "bold" }}>
-        <p>Total Users: {totalUsers}</p>
-        <p>0-10 orders: {orderCounts["0-10"]}</p>
-        <p>10-30 orders: {orderCounts["10-30"]}</p>
-        <p>30-60 orders: {orderCounts["30-60"]}</p>
-        <p>above60 orders: {orderCounts[">60"]}</p>
-      </div>
-      <div className="table-container">
-        {data.length > 0 && (
-          <table className="table">
-            <thead>
-              <tr>
-                {Object.keys(data[0]).map((key) => (
-                  <th key={key}>{key}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((row, index) => (
-                <tr key={index}>
-                  {Object.values(row).map((value, i) => (
-                    <td key={i}>{value.toString()}</td>
+        {message && <p>{message}</p>}
+        {tableName && <p>Table Name: {tableName}</p>}
+        <div className="table-container">
+          {data.length > 0 && (
+            <table className="table">
+              <thead>
+                <tr>
+                  {Object.keys(data[0]).map((key) => (
+                    <th key={key}>{key}</th>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              </thead>
+              <tbody>
+                {data.map((row, index) => (
+                  <tr key={index}>
+                    {Object.values(row).map((value, i) => (
+                      <td key={i}>{value.toString()}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
       </div>
     </div>
   );
