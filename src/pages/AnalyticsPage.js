@@ -11,7 +11,7 @@ const AnalyticsPage = () => {
   const tableName = localStorage.getItem("tableName");
 
   return (
-    <div className="analytics-container">
+    <div className="app-container">
       <h1 className="analytics-header">Analytics Page</h1>
       <p className="analytics-subheader">Here are your SWIGGY analytics data:</p>
       {tableName && <p>Table Name: {tableName}</p>}
